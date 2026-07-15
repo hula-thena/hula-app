@@ -40,7 +40,7 @@ const catOf = (id) => CATEGORIES.find((c) => c.id === id) || CATEGORIES[4];
 /* ------------------------------------------------------------------ */
 /*  모임 비밀번호 — 여기 따옴표 안의 글자만 바꾸면 비번이 바뀌어요        */
 /* ------------------------------------------------------------------ */
-const PASSWORD = "hula";
+const PASSWORD = "leo0608";
 
 const PASS_KEY = "hula_pass";
 const ME_KEY = "hula_me";
