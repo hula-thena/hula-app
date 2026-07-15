@@ -40,39 +40,6 @@ const LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAB4CAYAAAB7J0VF
 const uid = () => Math.random().toString(36).slice(2, 10);
 const now = () => Date.now();
 
-/* 처음 열었을 때 비어있지 않도록 보여주는 예시 글 (한 번만 심어짐) */
-const SEED = [
-  {
-    id: uid(),
-    type: "write",
-    author: "민지",
-    title: "오늘 마주친 문장",
-    body:
-      "“좋은 질문은 답보다 오래 남는다.” 회의 중에 들은 말인데 하루 종일 곱씹게 되네요. 우리가 던지는 질문이 곧 우리가 보는 세계의 모양인 것 같아요.",
-    url: "",
-    category: "quote",
-    tags: ["문장", "생각"],
-    likes: [],
-    comments: [],
-    createdAt: now() - 1000 * 60 * 60 * 26,
-  },
-  {
-    id: uid(),
-    type: "link",
-    author: "준호",
-    title: "읽는다는 것의 의미",
-    body: "느리게 읽는 것에 대한 글이에요. 모임에서 한 번 얘기 나눠보고 싶었어요.",
-    url: "https://example.com/slow-reading",
-    category: "essay",
-    tags: ["독서", "에세이"],
-    likes: [],
-    comments: [
-      { id: uid(), author: "민지", body: "이거 좋네요. 저장해둘게요!", createdAt: now() - 1000 * 60 * 60 * 3 },
-    ],
-    createdAt: now() - 1000 * 60 * 60 * 50,
-  },
-];
-
 /* ------------------------------------------------------------------ */
 /*  Storage helpers — Supabase (글·댓글·좋아요가 모두에게 공유됨)         */
 /* ------------------------------------------------------------------ */
@@ -111,23 +78,8 @@ function postToRow(p) {
   };
 }
 
-/* 처음 한 번, 글이 하나도 없으면 예시 글을 심어줍니다 */
-async function seedIfEmpty() {
-  try {
-    const { count } = await supabase
-      .from("posts")
-      .select("id", { count: "exact", head: true });
-    if (!count) {
-      await supabase.from("posts").insert(SEED.map(postToRow));
-    }
-  } catch (e) {
-    /* 무시 */
-  }
-}
-
 async function loadPosts() {
   try {
-    await seedIfEmpty();
     const { data, error } = await supabase
       .from("posts")
       .select("*")
@@ -136,7 +88,7 @@ async function loadPosts() {
     return (data || []).map(rowToPost);
   } catch (e) {
     console.error("글을 불러오지 못했어요", e);
-    return SEED;
+    return [];
   }
 }
 
