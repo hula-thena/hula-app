@@ -181,7 +181,6 @@ export default function GoodReads() {
   const [editingTagline, setEditingTagline] = useState(false);
 
   const [composing, setComposing] = useState(false);
-  const [showMoney, setShowMoney] = useState(true);
   const [calMonth, setCalMonth] = useState(() => {
     const d = new Date();
     return { y: d.getFullYear(), m: d.getMonth() };
@@ -319,8 +318,6 @@ export default function GoodReads() {
   return (
     <div style={S.shell}>
       <style>{CSS}</style>
-
-      {showMoney && <MoneyRain />}
 
       {askName && <NamePrompt onDone={(n) => { setMe(n); window.__me = n; setAskName(false); }} />}
 
@@ -495,39 +492,6 @@ export default function GoodReads() {
 
       {/* Composer */}
       {composing && <Composer onClose={() => setComposing(false)} onSubmit={addPost} />}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Money rain (plays once on open)                                    */
-/* ------------------------------------------------------------------ */
-function MoneyRain() {
-  const bills = Array.from({ length: 26 });
-  return (
-    <div style={S.moneyLayer} aria-hidden="true">
-      {bills.map((_, i) => {
-        const left = Math.random() * 100;
-        const delay = Math.random() * 1.8;
-        const dur = 2.6 + Math.random() * 1.8;
-        const size = 26 + Math.random() * 14;
-        const sway = (Math.random() * 2 - 1) * 40;
-        return (
-          <span
-            key={i}
-            className="gr-bill"
-            style={{
-              left: `${left}%`,
-              fontSize: size,
-              animationDelay: `${delay}s`,
-              animationDuration: `${dur}s`,
-              "--sway": `${sway}px`,
-            }}
-          >
-            💸
-          </span>
-        );
-      })}
     </div>
   );
 }
@@ -1229,21 +1193,7 @@ const CSS = `
   input:focus, textarea:focus { outline: none; border-color: ${C.accent} !important; }
   button { font-family: inherit; cursor: pointer; }
   @keyframes pop { from { transform: scale(.96); opacity: 0 } to { transform: scale(1); opacity: 1 } }
-  @keyframes gr-fall {
-    0% { transform: translateY(-12vh) translateX(0) rotate(0deg); opacity: 0; }
-    8% { opacity: 1; }
-    100% { transform: translateY(112vh) translateX(var(--sway)) rotate(360deg); opacity: 1; }
-  }
-  .gr-bill {
-    position: absolute;
-    top: 0;
-    animation-name: gr-fall;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
-    will-change: transform;
-    user-select: none;
-  }`;
+`;
 
 const S = {
   shell: {
@@ -1255,13 +1205,6 @@ const S = {
     margin: "0 auto",
     position: "relative",
     paddingBottom: 90,
-  },
-  moneyLayer: {
-    position: "fixed",
-    inset: 0,
-    pointerEvents: "none",
-    overflow: "hidden",
-    zIndex: 9999,
   },
   center: { padding: 60, textAlign: "center" },
 
