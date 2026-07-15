@@ -17,6 +17,9 @@ import {
   Trash2,
   ExternalLink,
   ImagePlus,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -59,6 +62,7 @@ function rowToPost(r) {
     comments: r.comments || [],
     createdAt: Number(r.created_at) || now(),
     editedAt: r.edited_at ? Number(r.edited_at) : null,
+    align: r.align || "left",
   };
 }
 function postToRow(p) {
@@ -76,6 +80,7 @@ function postToRow(p) {
     comments: p.comments || [],
     created_at: p.createdAt || now(),
     edited_at: p.editedAt || null,
+    align: p.align || "left",
   };
 }
 
@@ -560,6 +565,40 @@ function Feed({ posts, me, onLike, onComment, onTag, onDelete, onEdit }) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  정렬 선택 (왼쪽 / 가운데 / 오른쪽)                                  */
+/* ------------------------------------------------------------------ */
+const ALIGNS = [
+  { id: "left", label: "왼쪽", Icon: AlignLeft },
+  { id: "center", label: "가운데", Icon: AlignCenter },
+  { id: "right", label: "오른쪽", Icon: AlignRight },
+];
+
+function AlignPicker({ value, onChange }) {
+  return (
+    <div style={{ marginTop: 14 }}>
+      <div style={S.fieldLabel}>글씨 정렬</div>
+      <div style={S.alignRow}>
+        {ALIGNS.map(({ id, label, Icon }) => {
+          const on = value === id;
+          return (
+            <button
+              key={id}
+              style={{ ...S.alignBtn, ...(on ? S.alignBtnOn : {}) }}
+              onClick={() => onChange(id)}
+              aria-label={label}
+              title={label}
+            >
+              <Icon size={15} />
+              <span>{label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Edit card — 글 수정                                                */
 /* ------------------------------------------------------------------ */
 function EditCard({ post, onCancel, onSave }) {
@@ -568,6 +607,7 @@ function EditCard({ post, onCancel, onSave }) {
   const [url, setUrl] = useState(post.url || "");
   const [image, setImage] = useState(post.image || "");
   const [category, setCategory] = useState(post.category || "etc");
+  const [align, setAlign] = useState(post.align || "left");
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState(post.tags || []);
 
@@ -660,6 +700,8 @@ function EditCard({ post, onCancel, onSave }) {
         </div>
       </div>
 
+      <AlignPicker value={align} onChange={setAlign} />
+
       <div style={{ marginTop: 14 }}>
         <div style={S.fieldLabel}>태그 (최대 6개)</div>
         <div style={S.tagInputRow}>
@@ -699,6 +741,7 @@ function EditCard({ post, onCancel, onSave }) {
               image,
               category,
               tags,
+              align,
             })
           }
         >
@@ -795,8 +838,8 @@ function PostCard({ post, me, onLike, onComment, onTag, onDelete, onEdit }) {
         </div>
       )}
 
-      {post.title && <h3 style={S.cardTitle}>{post.title}</h3>}
-      {post.body && <p style={S.cardBody}>{post.body}</p>}
+      {post.title && <h3 style={{ ...S.cardTitle, textAlign: post.align || "left" }}>{post.title}</h3>}
+      {post.body && <p style={{ ...S.cardBody, textAlign: post.align || "left" }}>{post.body}</p>}
 
       {post.image && (
         <img src={post.image} alt={post.title || "이미지"} style={S.cardImage} />
@@ -1008,6 +1051,7 @@ function Composer({ onClose, onSubmit }) {
   const [url, setUrl] = useState("");
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("mission");
+  const [align, setAlign] = useState("left");
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
 
@@ -1043,6 +1087,7 @@ function Composer({ onClose, onSubmit }) {
       image,
       category,
       tags,
+      align,
     });
   }
 
@@ -1134,6 +1179,8 @@ function Composer({ onClose, onSubmit }) {
         </div>
 
         {/* tags */}
+        <AlignPicker value={align} onChange={setAlign} />
+
         <div style={{ marginTop: 14 }}>
           <div style={S.fieldLabel}>태그 (최대 6개)</div>
           <div style={S.tagInputRow}>
@@ -1385,6 +1432,14 @@ const S = {
     fontSize: 15, color: C.ink, background: "#F7F7F7", fontFamily: "inherit",
   },
   fieldLabel: { fontSize: 12.5, fontWeight: 600, color: C.textSec, marginBottom: 8 },
+
+  alignRow: { display: "flex", gap: 6 },
+  alignBtn: {
+    flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
+    height: 38, border: `0.5px solid ${C.borderStrong}`, background: C.surface,
+    borderRadius: 10, fontSize: 13, fontWeight: 500, color: C.textSec,
+  },
+  alignBtnOn: { background: C.ink, color: "#fff", borderColor: C.ink },
 
   tagInputRow: { display: "flex", gap: 8 },
   addTagBtn: { padding: "0 16px", borderRadius: 11, border: `0.5px solid ${C.borderStrong}`, background: C.surface, fontSize: 13.5, fontWeight: 500, color: C.textSec },
