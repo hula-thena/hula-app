@@ -1,42 +1,557 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오늘의 자각공부</title>
+<meta name="description" content="신묘장구대다라니 21독, 명상, 공경찬탄, 의도 세우기 — 100일 자각공부 기록">
+<meta name="theme-color" content="#f5eef0">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="자각공부">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* 한 줄 세로 흐름(휴대폰 우선). 연꽃이 모티브: 연분홍 꽃잎이 강조색, 연잎 초록이 보조, 마친 것은 금빛. */
+:root{
+  --bg:#f5eef0; --surface:#fffafb; --ink:#2b2230; --muted:#75687a; --line:#e6d5db;
+  --accent:#c04f7d; --accent-ink:#ffffff; --gold:#a06f12; --soft:#f3e1e8; --leaf:#3f7d66; --petal:#f8e4eb;
+  --display:"Gowun Batang","Nanum Myeongjo","Apple SD Gothic Neo",serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17131a; --surface:#211b25; --ink:#f1e8ee; --muted:#a898a8; --line:#3d3040;
+    --accent:#e58bb0; --accent-ink:#2a1020; --gold:#e0b662; --soft:#2e2433; --leaf:#7fc0a4; --petal:#2e2231;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17131a; --surface:#211b25; --ink:#f1e8ee; --muted:#a898a8; --line:#3d3040;
+  --accent:#e58bb0; --accent-ink:#2a1020; --gold:#e0b662; --soft:#2e2433; --leaf:#7fc0a4; --petal:#2e2231;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:520px;margin:0 auto;padding:24px 16px 56px;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+h1{font-size:28px;line-height:1.25}
+h2{font-size:21px}
+h3{font-size:17px}
+p{margin:0}
+button,input,textarea{font:inherit;color:inherit}
+button{touch-action:manipulation;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 
-    <title>훌라</title>
-    <meta name="description" content="참회와 감사, 자각과 자기사랑 — 우리가 모은 좋은 글" />
+.top{display:flex;flex-direction:column;gap:14px}
+.date{color:var(--muted);font-size:14px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.wd{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 0 9px;display:flex;flex-direction:column;align-items:center;gap:5px;font-variant-numeric:tabular-nums;cursor:pointer}
+.wd.today{border-color:var(--accent);border-width:2px;padding:7px 0 8px}
+.wd small{font-size:11px;color:var(--muted);line-height:1}
+.wd b{font-size:15px;font-weight:600;line-height:1}
+.marks{display:grid;grid-template-columns:repeat(2,11px);gap:2px}
+/* 체크 표시는 모두 연꽃 금화 그림: 처음에는 색 없이 흐리고, 채우면 금빛으로 빛난다. */
+.mark,.dot,.ball{background:url(/coin.webp) center/contain no-repeat;filter:grayscale(1) brightness(1.15);opacity:.4;flex:none}
+.mark.on,.dot.on,.ball.on{filter:drop-shadow(0 0 3px rgba(240,190,60,.9));opacity:1}
+.mark{width:11px;height:11px}
+.mark.on{filter:none}
+.legend{font-size:12px;color:var(--muted)}
 
-    <!-- 폰트 (프리텐다드 — 단정하고 깔끔한 한글 폰트) -->
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-    />
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 18px;display:flex;flex-direction:column;gap:16px}
+.card.done{border-color:var(--gold)}
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pill{font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.pill.done{background:var(--gold);color:var(--surface)}
+.verse{font-family:var(--display);font-size:18px;line-height:1.75;border-left:3px solid var(--leaf);padding:2px 0 2px 14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.hint{font-size:14px;color:var(--muted)}
+.verse.three{border-left:0;padding:4px 0;text-align:center;word-break:keep-all;font-size:clamp(15px,4.3vw,18px);line-height:1.9}
+.pre{display:flex;flex-direction:column;gap:20px;padding:4px 0}
+.pre p{font-family:var(--display);font-size:clamp(15px,4.4vw,17px);line-height:1.95;text-align:center;white-space:pre-line;word-break:keep-all}
+.hundred{display:flex;flex-direction:column;gap:8px}
+.hrow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.nth{font-family:var(--display);font-weight:700;font-size:24px;color:var(--accent);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
 
-    <!-- 앱 설치용 설정 -->
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#FAFAFA" />
+.cal{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+.cell{aspect-ratio:1;border-radius:50%;border:1px solid var(--line);background:var(--bg);font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;padding:0;font-variant-numeric:tabular-nums;min-width:0}
+button.cell{cursor:pointer}
+.cell.part{background:var(--soft);color:var(--ink);border-color:var(--accent)}
+.cell.full{background:radial-gradient(circle at 35% 30%,#f7dc8c,#d9ab3c 60%,#b28220);border-color:#a87a17;color:#4a3105;font-weight:600}
+.cell.now{outline:2px solid var(--accent);outline-offset:1px}
+.cell.fut{opacity:.45}
+.sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.scrim{position:absolute;inset:0;background:rgba(25,15,25,.5)}
+.sheet .card{position:relative;width:100%;max-width:520px;max-height:85%;overflow:auto;gap:10px}
+.drow{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.drow b{font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.drow b.ok{color:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.chip.ok{background:var(--gold);color:var(--surface)}
 
-    <!-- 아이콘 -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/icon-192.png" />
+.hero{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 12px}
+.fig{position:relative;width:100%;max-width:300px;margin:0 auto;aspect-ratio:780/850}
+.fig img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fig .dim{filter:saturate(.7);opacity:.28}
+.star{position:absolute;width:14px;height:14px;margin:-7px;background:var(--gold);clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);opacity:0}
+.shine .star{opacity:1}
+@keyframes tw{0%,100%{opacity:.15}50%{opacity:1}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 10px var(--gold))}50%{filter:drop-shadow(0 0 26px var(--gold))}}
+@media (prefers-reduced-motion:no-preference){.shine{animation:glow 2.4s ease-in-out infinite}.shine .star{animation:tw 1.8s ease-in-out infinite}}
 
-    <!-- 아이폰에서 앱처럼 전체화면으로 열리게 -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="훌라" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-    <script>
-      // 안드로이드에서 "앱 설치"가 뜨게 하려면 서비스 워커 등록이 필요해요
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function () {
-          navigator.serviceWorker.register("/sw.js").catch(function () {});
-        });
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--line);background:transparent;border-radius:10px;padding:9px 14px;font-size:14px;font-weight:500}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-size:16px;font-weight:600;padding:14px 18px;flex:1 1 auto}
+.btn:active{transform:translateY(1px)}
+textarea,input[type=text],input[type=number]{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+textarea{min-height:120px;resize:vertical;line-height:1.7}
+
+.ring{width:100%;border:0;background:transparent;padding:4px 0;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.balls{display:grid;grid-template-columns:repeat(7,34px);gap:7px;justify-content:center}
+.ball{width:34px;height:34px}
+.ball.next{opacity:.75}
+.center{display:flex;flex-direction:column;align-items:center;gap:4px}
+.count{font-family:var(--display);font-weight:700;font-size:46px;line-height:1;font-variant-numeric:tabular-nums}
+.count span{font-size:17px;color:var(--muted);font-weight:400}
+.center small{font-size:12px;color:var(--muted)}
+
+.block{border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:10px}
+.people{display:flex;flex-direction:column;gap:6px;list-style:none;margin:0;padding:0}
+.person{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-align:left;min-height:50px}
+.person .name{overflow-wrap:anywhere;font-weight:500}
+.person.full{border-color:var(--gold)}
+.dots{display:flex;gap:7px;flex:none}
+.dot{width:26px;height:26px}
+.x{border:1px solid var(--line);background:transparent;border-radius:8px;padding:4px 10px;font-size:13px;flex:none}
+.add{display:flex;gap:8px}
+.add input{flex:1;min-width:0}
+.sync{font-size:12px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:no-preference){
+  .dot,.mark{transition:background-color .2s,border-color .2s}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="date" id="date"></p>
+    <h1>오늘의 자각공부</h1>
+    <div class="hundred" id="hundred"></div>
+    <div class="week" id="week" aria-label="지난 7일 기록"></div>
+    <p class="legend">금화 네 닢은 차례로 의도 · 다라니 21독 · 명상 · 공경찬탄입니다. 마친 것은 금빛으로 채워집니다. 날짜를 누르면 그날 기록이 보입니다.</p>
+  </header>
+  <main style="display:flex;flex-direction:column;gap:20px">
+    <section id="pre"></section>
+    <section id="intent"></section>
+    <div class="hero" id="hero"></div>
+    <section id="dharani"></section>
+    <section id="meditate"></section>
+    <section id="praise"></section>
+  </main>
+  <section id="cal"></section>
+  <div id="dayview"></div>
+  <p class="sync">기록은 이 핸드폰에 저장됩니다.</p>
+</div>
+<script>
+(function(){
+"use strict";
+var KEY="jagak-practice-v1";
+var START="2026-11-18";
+var DHARANI="나모라 다나다라 야야\n나막알약 바로기제 새바라야 모지사다바야\n마하사다바야 마하가로니가야\n옴 살바 바예수 다라나 가라야\n다사명 나막까리다바 이맘알야 바로기제 새바라다바\n니라간타 나막하리나야 마발다 이사미\n살발타 사다남 수반 아예염\n살바 보다남 바바말아 미수다감\n다냐타 옴 아로게 아로가 마지로가 지가란제\n혜혜하례 마하모지 사다바\n사마라 사마라 하리나야\n구로구로 갈마 사다야 사다야\n도로도로 미연제 마하미연제\n다라다라 다린 나례 새바라\n자라자라 마라 미마라 아마라 몰제\n예혜혜 로계 새바라 라아미사미 나사야\n나베 사미사미 나사야\n모하자라 미사미 나사야\n호로호로 마라호로 하례 바나마 나바\n사라사라 시리시리 소로소로 못쟈못쟈 모다야 모다야 매다리야 니라간타\n가마사 날사남 바라하라 나야 마낙 사바하\n싯다야 사바하 마하싯다야 사바하\n싯다유예 새바라야 사바하 니라간타야 사바하\n바라하 목카 싱하 목카야 사바하\n바나마 하따야 사바하 자가라 욕다야 사바하\n상카섭나녜 모다나야 사바하\n마하라 구타다라야 사바하\n바마사간타 이사시체다 가릿나 이나야 사바하\n먀가라 잘마 이바사나야 사바하\n나모라 다나다라 야야 나막알야 바로기제 새바라야 사바하\n나모라 다나다라 야야 나막알야 바로기제 새바라야 사바하\n나모라 다나다라 야야 나막알야 바로기제 새바라야 사바하";
+var INTENT_DEFAULT="나는 이 수행을 통해 얻고자 하는 게 무엇인가요?\n\n나는 오늘 나를 위해서\n내가 나를 이해하고 사랑하기 위해서\n내가 성장하고 깨치고 졸업하기 위해서\n그리고 쌤과 도반들, 가족을 위해서\n사랑과 초연함으로 의도를 세웁니다";
+var PRE=`나는 지금 이 수행을
+무엇을 위해 하려고 하는가.
+
+특별한 깨달음을 얻기 위해서인가.
+수행을 잘했다는
+만족감을 얻기 위해서인가.
+부족한 나를 고쳐
+더 나은 사람이 되기 위해서인가.
+
+먼저 지금 이 순간
+내가 어떤 마음으로
+이 자리에 있는지 느껴봅니다.
+
+나는 내가 알고 있고
+내가 옳다고 생각하지만
+이것 역시 고작 생각입니다.
+
+내 생각이 옳다는 믿음도
+내 감정이 진실이라는 믿음도
+수행은 이래야 한다는
+나의 규정도 내려놓겠습니다.
+
+이 수행을 통해 얻고자 하는
+모든 결과와 성과마저
+지금 이 순간
+완전히 내려놓겠습니다.
+
+내가 무엇을 원하고
+무엇을 두려워하고
+무엇을 붙잡고
+무엇을 거부하는지,
+
+그 모든 마음을 만들어내는
+나를 관찰하고 자각하겠습니다.
+
+불편함이 올라와도
+조급함이 올라와도
+하기 싫은 마음이 올라와도
+실패라고 판단하지 않겠습니다.
+
+그 마음에 휘말리는 나를
+있는 그대로 관찰하고
+비난하거나 외면하지 않고
+사랑으로 마주하겠습니다.
+
+스승님의 가르침을
+내 생각과 기준으로
+판단하지 않겠습니다.
+
+내가 아직 알지 못하는
+무한한 가능성이 있음을 인정하고
+배우는 마음을 내겠습니다.
+
+이 귀한 가르침을 만난 것에
+감사합니다.
+
+오늘도 나를 자각하고
+수행할 수 있는
+기회가 주어졌음에
+감사하고 또 감사합니다.
+
+나는 오늘
+수행했다는 사실이나
+성과를 남기기 위해서가 아니라,
+
+나를 진정으로 알고
+나를 사랑하고
+나의 한계를 넘어
+성장하고 깨닫기 위해
+이 수행을 선택합니다.
+
+그리하여 이 생에서
+깨어나고 졸업하겠다는
+발심을 다시 세웁니다.
+
+이제 나 자신에게 묻겠습니다.
+
+나는 지금 어떤 마음으로
+수행하려 하는가?
+
+나는 오늘 진정으로
+무엇을 위해
+이 수행을 선택하는가?
+
+어떠한 생각과 감정이 올라와도
+그것에 휘둘리는 대신
+나를 믿고, 쌤을 믿고,
+쌤의 가르침을 믿는 마음을
+지금 이 순간 선택하겠습니다.
+
+나는 오늘 이 수행을 통해
+새롭게 알아가겠습니다.
+
+"나는 이것만으로도 감사하다."
+
+지금의 내 환경과
+이 귀한 수업을 듣고
+이렇게 수행할 수 있는 것만으로도
+얼마나 큰 축복이고
+감사한 일인지를.
+
+내가 이미 얼마나
+귀한 환경에 있는지를
+진심으로, 뼛속 깊이
+알아가겠습니다.
+
+감사가 느껴지지 않는 순간에도
+그러한 나를 비난하지 않고
+관찰하고 이해하며
+사랑하겠습니다.
+
+나는 나를 위해
+온 마음을 다해 수행하겠습니다.
+
+그리고 반드시
+이 길을 걸어가겠습니다.
+
+그러나 이 발심과 다짐마저
+붙잡거나 집착하지 않고
+지금 이 순간
+사랑으로 내려놓겠습니다.
+
+나는 두려움 대신
+사랑과 감사,
+초연함을 선택합니다.
+
+나는 억울함, 두려움, 불안, 죄책감에 포커싱할 것인가?
+나를 한번이라도 더 사랑하는 것에 포커싱할 것인가?`;
+var PHRASE="제가 당신을 공경하고 찬탄하겠습니다.\n당신은 자각(보살도)을 이루어\n부처님이 되실 것이기 때문입니다.";
+var BLOCKS=[
+  {id:"morning",title:"매일 아침",hint:"엄마 아빠에게, 쌤에게"},
+  {id:"day",title:"일과 중",hint:"미션방 도반 한 사람 한 사람에게, 회사 동료와 사장에게"},
+  {id:"night",title:"자기 전",hint:"가족, 남편, 나 자신에게"}
+];
+var WD=["일","월","화","수","목","금","토"];
+
+function defaults(){
+  return {v:1,
+    settings:{t:0,pv:2,intentText:"",people:{
+      morning:[{id:"m1",name:"엄마"},{id:"m2",name:"아빠"},{id:"m3",name:"쌤"}],
+      day:[{id:"d1",name:"미션방 도반 1"},{id:"d4",name:"미션방 도반 2"},{id:"d5",name:"미션방 도반 3"},{id:"d2",name:"회사 동료 1"},{id:"d6",name:"회사 동료 2"},{id:"d7",name:"회사 동료 3"},{id:"d3",name:"사장"}],
+      night:[{id:"n1",name:"가족 1"},{id:"n4",name:"가족 2"},{id:"n5",name:"가족 3"},{id:"n2",name:"남편"},{id:"n3",name:"나 자신"}]
+    }},
+    days:{}};
+}
+function dateKey(d){
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function valid(s){return s&&typeof s==="object"&&s.settings&&s.settings.people&&s.days&&typeof s.days==="object";}
+
+var state=defaults();
+try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(valid(p))state=p;}}catch(e){}
+BLOCKS.forEach(function(b){if(!Array.isArray(state.settings.people[b.id]))state.settings.people[b.id]=[];});
+/* 이 기기에 오래 남도록 브라우저에 요청한다(지원하는 브라우저만). */
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
+
+var todayKey=dateKey(new Date());
+var editingIntent=false, editingBlock=null, preOpen=false, editingNth=false, viewDay=null;
+
+function day(k){
+  if(!state.days[k])state.days[k]={dh:0,int:0,gg:{},blocks:0,t:0};
+  var d=state.days[k]; if(!d.gg)d.gg={};
+  return d;
+}
+function blockDone(bid,d){
+  var ppl=state.settings.people[bid];
+  return ppl.length>0&&ppl.every(function(p){return (d.gg[p.id]||0)>=3;});
+}
+function blocksDone(d){return BLOCKS.filter(function(b){return blockDone(b.id,d);}).length;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function touchDay(){var d=day(todayKey);d.blocks=blocksDone(d);d.t=Date.now();save();}
+function touchSettings(){state.settings.t=Date.now();var d=day(todayKey);d.blocks=blocksDone(d);d.t=Date.now();save();}
+
+/* ---------- 그리기 ---------- */
+function startDate(){var sp=(state.settings.start||START).split("-");return new Date(+sp[0],sp[1]-1,+sp[2]);}
+function renderTop(){
+  var now=new Date();
+  document.getElementById("date").textContent=now.getFullYear()+"년 "+(now.getMonth()+1)+"월 "+now.getDate()+"일 "+WD[now.getDay()]+"요일";
+  var h="";
+  renderHero();
+  var ST=state.settings.start||START, s0=startDate(), t0=new Date(now.getFullYear(),now.getMonth(),now.getDate()), nth=Math.round((t0-s0)/864e5)+1, full=0;
+  Object.keys(state.days).forEach(function(k){
+    if(k<ST)return; var x=state.days[k], bl=k===todayKey?blocksDone(day(k)):(x.blocks||0);
+    if((x.int||0)>=1&&(x.dh||0)>=21&&(x.med||0)>=3&&bl>=3)full++;
+  });
+  document.getElementById("hundred").innerHTML=editingNth?'<form class="add" data-form="nth"><input type="number" inputmode="numeric" id="nth-input" min="1" max="999" value="'+Math.max(1,nth)+'" aria-label="오늘이 몇 일차인지"><button class="btn" type="submit">저장</button><button class="btn" type="button" data-act="nth-cancel">취소</button></form><p class="hint">오늘이 몇 일차인지 숫자로 적어 주세요.</p>':nth<1?'<div class="hrow"><span class="hint">아직 시작 전입니다</span><button class="btn" data-act="nth-edit" style="padding:4px 10px;font-size:13px">차수 바꾸기</button></div>':'<div class="hrow"><span class="nth">'+nth+'일차</span><button class="btn" data-act="nth-edit" style="padding:4px 10px;font-size:13px">차수 바꾸기</button><span class="hint">'+(nth<100?'100일까지 '+(100-nth)+'일 남았습니다':(nth===100?'오늘이 100일째입니다':'100일을 채웠습니다'))+' · 모두 마친 날 '+full+'일</span></div><div class="bar" role="img" aria-label="100일 중 '+Math.min(100,nth)+'일째"><i style="width:'+Math.min(100,nth)+'%"></i></div>';
+  for(var i=6;i>=0;i--){
+    var dt=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i), k=dateKey(dt), d=state.days[k]||{};
+    var a=(d.int||0)>=1, b=(d.dh||0)>=21, m=(d.med||0)>=3, c=(k===todayKey?blocksDone(day(k)):(d.blocks||0))>=3;
+    var lab=(dt.getMonth()+1)+"월 "+dt.getDate()+"일: 의도 "+(a?"함":"안 함")+", 다라니 "+(b?"마침":"못 마침")+", 명상 "+(m?"마침":"못 마침")+", 공경찬탄 "+(c?"마침":"못 마침");
+    h+='<button type="button" class="wd'+(i===0?" today":"")+'" data-act="day-open" data-k="'+k+'" title="'+lab+'" aria-label="'+lab+'"><small>'+WD[dt.getDay()]+'</small><b>'+dt.getDate()+'</b>'+
+       '<span class="marks"><i class="mark'+(a?" on":"")+'"></i><i class="mark'+(b?" on":"")+'"></i><i class="mark'+(m?" on":"")+'"></i><i class="mark'+(c?" on":"")+'"></i></span></button>';
+  }
+  document.getElementById("week").innerHTML=h;
+  renderCal();
+}
+function dayStat(k){
+  var x=state.days[k]; if(!x)return 0;
+  var a=(x.int||0)>=1,b=(x.dh||0)>=21,m=(x.med||0)>=3,c=(k===todayKey?blocksDone(day(k)):(x.blocks||0))>=3;
+  return (a?1:0)+(b?1:0)+(m?1:0)+(c?1:0);
+}
+function hasAny(x){
+  if(!x)return false;
+  var gg=x.gg||{};
+  return (x.int||0)>0||(x.dh||0)>0||(x.med||0)>0||!!x.read||!!(x.note||"").trim()||Object.keys(gg).some(function(q){return gg[q]>0;});
+}
+function renderCal(){
+  var s0=startDate(), h="", full=0;
+  for(var i=0;i<100;i++){
+    var dt=new Date(s0.getFullYear(),s0.getMonth(),s0.getDate()+i), k=dateKey(dt), fut=k>todayKey;
+    var s=fut?0:dayStat(k), cls="cell"+(fut?" fut":"")+(k===todayKey?" now":"")+(s===4?" full":(!fut&&hasAny(state.days[k])?" part":""));
+    if(s===4)full++;
+    h+=fut?'<span class="'+cls+'" aria-hidden="true">'+(i+1)+'</span>':'<button type="button" class="'+cls+'" data-act="day-open" data-k="'+k+'" aria-label="'+(i+1)+'일차, '+(dt.getMonth()+1)+'월 '+dt.getDate()+'일, 네 가지 중 '+s+'가지 마침">'+(i+1)+'</button>';
+  }
+  document.getElementById("cal").innerHTML='<div class="card"><div class="head"><h2>100일 기록</h2><span class="pill'+(full>0?" done":"")+'">모두 마친 날 '+full+'일</span></div><div class="cal">'+h+'</div><p class="hint">금빛은 의도 · 다라니 · 명상 · 공경찬탄을 모두 마친 날, 연분홍은 일부만 한 날입니다. 지난 날을 누르면 그날 기록이 보입니다.</p></div>';
+}
+function renderDay(){
+  var el=document.getElementById("dayview");
+  if(!viewDay){el.innerHTML="";return;}
+  var k=viewDay, x=state.days[k]||{}, gg=x.gg||{}, p=k.split("-"), dt=new Date(+p[0],p[1]-1,+p[2]), n=Math.round((dt-startDate())/864e5)+1, body="";
+  function row(label,val,ok){return '<div class="drow"><span>'+label+'</span><b'+(ok?' class="ok"':'')+'>'+val+'</b></div>';}
+  if(!hasAny(x)){body='<p class="hint">이 날은 기록이 없습니다.</p>';}
+  else{
+    if((x.note||"").trim())body+='<h3>그날의 의도</h3><p class="verse">'+esc(x.note)+'</p>';
+    body+='<div>'+row("수행하기 전 마음가짐",x.read?"읽음":"안 읽음",!!x.read)+row("의도 세우기",(x.int||0)+"번",(x.int||0)>=1)+row("신묘장구대다라니",Math.min(x.dh||0,21)+" / 21독",(x.dh||0)>=21)+row("명상파일 듣기",Math.min(x.med||0,3)+" / 3번",(x.med||0)>=3);
+    BLOCKS.forEach(function(b){
+      var ppl=state.settings.people[b.id], done=ppl.filter(function(q){return (gg[q.id]||0)>=3;}).length;
+      body+=row("공경찬탄 · "+b.title,done+" / "+ppl.length+"명",ppl.length>0&&done===ppl.length);
+      body+='<div class="chips" style="padding:6px 0">'+ppl.map(function(q){var c=Math.min(gg[q.id]||0,3);return '<span class="chip'+(c>=3?" ok":"")+'">'+esc(q.name)+' '+c+'/3</span>';}).join("")+'</div>';
+    });
+    body+='</div>';
+  }
+  el.innerHTML='<div class="sheet" role="dialog" aria-modal="true" aria-label="'+(dt.getMonth()+1)+'월 '+dt.getDate()+'일 기록"><div class="scrim" data-act="day-close"></div><div class="card"><div class="head"><h2>'+(dt.getMonth()+1)+'월 '+dt.getDate()+'일 '+WD[dt.getDay()]+'요일</h2>'+(n>=1?'<span class="pill">'+n+'일차</span>':'')+'</div>'+body+'<div class="row"><button class="btn primary" data-act="day-close">닫기</button></div></div></div>';
+  var cb=el.querySelector(".btn.primary"); if(cb)cb.focus();
+}
+function renderIntent(){
+  var d=day(todayKey), n=d.int||0, txt=state.settings.intentText||"", h;
+  h='<div class="card'+(n>0?" done":"")+'"><div class="head"><h2>의도 세우기</h2><span class="pill'+(n>0?" done":"")+'">오늘 '+n+'번</span></div>';
+  if(editingIntent){
+    h+='<label class="hint" for="intent-text">의도를 세우기 전에 읽을 문구</label>'+
+       '<textarea id="intent-text">'+esc(txt.trim()?txt:INTENT_DEFAULT)+'</textarea>'+
+       '<div class="row"><button class="btn primary" data-act="intent-save">문구 저장</button><button class="btn" data-act="intent-cancel">취소</button></div>';
+  }else{
+    h+='<p class="verse three">'+esc(txt.trim()?txt:INTENT_DEFAULT)+'</p>';
+    h+='<label class="hint" for="intent-note">오늘의 의도</label><textarea id="intent-note" style="min-height:96px" placeholder="오늘 세우는 의도를 적어 보세요">'+esc(d.note||"")+'</textarea>';
+    h+='<div class="row"><button class="btn primary" data-act="intent-add">의도를 세웠습니다</button></div>'+
+       '<div class="row"><button class="btn" data-act="intent-edit">문구 고치기</button>'+
+       (n>0?'<button class="btn" data-act="intent-undo">하나 되돌리기</button>':'')+'</div>';
+  }
+  h+='</div>';
+  document.getElementById("intent").innerHTML=h;
+}
+function heroHtml(p,all){
+  /* 흐린 그림 위에 밝은 그림을 겹치고, 진행률만큼 아래에서부터 드러낸다. */
+  var cut=Math.round(p*100), stars="", mask="";
+  if(p<1)mask='linear-gradient(to top,#000 '+Math.max(0,cut-5)+'%,transparent '+Math.min(100,cut+5)+'%)';
+  [[8,30],[90,22],[14,62],[92,58],[4,88],[70,6],[30,4],[96,90]].forEach(function(s,i){
+    stars+='<i class="star" style="left:'+s[0]+'%;top:'+s[1]+'%;animation-delay:'+(i*0.23).toFixed(2)+'s"></i>';
+  });
+  return '<div class="fig'+(all?' shine':'')+'" role="img" aria-label="연꽃 위에 앉으신 부처님"><img class="dim" src="/buddha3.webp" alt="">'+
+    (p>0?'<img class="lit" src="/buddha3.webp" alt="" style="'+(mask?'-webkit-mask-image:'+mask+';mask-image:'+mask+';':'')+'filter:drop-shadow(0 0 '+Math.round(6+p*12)+'px var(--gold)) brightness('+(1+p*0.08).toFixed(2)+')">':'')+stars+'</div>';
+}
+function renderHero(){
+  var d=day(todayKey), tot=0, got=0;
+  BLOCKS.forEach(function(b){state.settings.people[b.id].forEach(function(q){tot+=3;got+=Math.min(d.gg[q.id]||0,3);});});
+  var dh=Math.min(d.dh||0,21)/21, pr=tot?got/tot:0, all=dh>=1&&blocksDone(d)>=3;
+  document.getElementById("hero").innerHTML=heroHtml((dh+pr)/2,all)+'<p class="hint" style="text-align:center">'+(all?"오늘 다라니 21독과 공경찬탄을 모두 채웠습니다.":"다라니와 공경찬탄을 채울수록 연꽃 아래에서부터 빛이 차오릅니다.")+'</p>';
+}
+function renderDharani(){
+  var d=day(todayKey), n=Math.min(d.dh||0,21), done=n>=21, beads="";
+  for(var i=0;i<21;i++)beads+='<i class="ball'+(i<n?" on":(i===n?" next":""))+'"></i>';
+  var h='<div class="card'+(done?" done":"")+'"><div class="head"><h2>신묘장구대다라니 21독</h2><span class="pill'+(done?" done":"")+'">'+(done?"마쳤습니다":n+" / 21")+'</span></div>'+
+    '<div class="pre"><p style="font-size:clamp(14px,4vw,16px);line-height:1.9">'+esc(DHARANI)+'</p></div><button class="ring" data-act="dh-add" aria-label="한 독 마침. 지금 '+n+'독"'+(done?" disabled":"")+'>'+
+    '<span class="center"><span class="count">'+n+'<span> / 21</span></span><small>'+(done?"21독을 마쳤습니다":"한 독 마칠 때마다 금화를 하나씩 누르세요")+'</small></span><span class="balls">'+beads+'</span></button>'+
+    (n>0?'<div class="row" style="justify-content:center"><button class="btn" data-act="dh-undo">하나 되돌리기</button></div>':'')+
+    '</div>';
+  document.getElementById("dharani").innerHTML=h;
+}
+function renderPre(){
+  var d=day(todayKey), read=!!d.read, h;
+  h='<div class="card'+(read?" done":"")+'"><div class="head"><h2>수행하기 전 마음가짐</h2><span class="pill'+(read?" done":"")+'">'+(read?"오늘 읽었습니다":"읽기 전")+'</span></div>';
+  if(!read||preOpen){
+    h+='<div class="pre">'+PRE.trim().split(/\n\s*\n/).map(function(s){return '<p>'+esc(s)+'</p>';}).join("")+'</div>'+
+       '<div class="row"><button class="btn primary" data-act="pre-done">'+(read?"접기":"다 읽었습니다")+'</button></div>';
+  }else{
+    h+='<div class="row"><button class="btn" data-act="pre-open">다시 펼쳐 읽기</button></div>';
+  }
+  document.getElementById("pre").innerHTML=h+'</div>';
+}
+function renderMed(){
+  var d=day(todayKey), n=Math.min(d.med||0,3), done=n>=3, coins="";
+  for(var i=0;i<3;i++)coins+='<i class="ball'+(i<n?" on":(i===n?" next":""))+'" style="width:44px;height:44px"></i>';
+  document.getElementById("meditate").innerHTML='<div class="card'+(done?" done":"")+'"><div class="head"><h2>명상파일 듣기 3번</h2><span class="pill'+(done?" done":"")+'">'+(done?"마쳤습니다":n+" / 3")+'</span></div>'+
+    '<button class="ring" data-act="med-add" aria-label="명상파일 한 번 들음. 지금 '+n+'번"'+(done?" disabled":"")+'><span class="balls" style="grid-template-columns:repeat(3,44px);gap:14px">'+coins+'</span><span class="hint">'+(done?"오늘 세 번 모두 들었습니다":"한 번 들을 때마다 금화를 누르세요")+'</span></button>'+
+    (n>0?'<div class="row" style="justify-content:center"><button class="btn" data-act="med-undo">하나 되돌리기</button></div>':'')+'</div>';
+}
+function renderPraise(){
+  var d=day(todayKey), bd=blocksDone(d), all=bd>=3;
+  var h='<div class="card'+(all?" done":"")+'"><div class="head"><h2>공경찬탄</h2><span class="pill'+(all?" done":"")+'">'+(all?"마쳤습니다":bd+" / 3")+'</span></div>'+
+    '<p class="verse three">'+esc(PHRASE)+'</p><p class="hint">한 사람당 세 번씩 말합니다. 말할 때마다 그 사람을 누르세요.</p>';
+  BLOCKS.forEach(function(b){
+    var ppl=state.settings.people[b.id], ok=blockDone(b.id,d), ed=editingBlock===b.id;
+    h+='<div class="block"><div class="head"><h3>'+b.title+'</h3><span class="pill'+(ok?" done":"")+'">'+(ok?"마쳤습니다":"하는 중")+'</span></div>'+
+       '<p class="hint">'+b.hint+'</p><ul class="people">';
+    ppl.forEach(function(p){
+      var c=Math.min(d.gg[p.id]||0,3);
+      if(ed){
+        h+='<li class="person"><span class="name">'+esc(p.name)+'</span><button class="x" data-act="p-del" data-b="'+b.id+'" data-id="'+esc(p.id)+'" aria-label="'+esc(p.name)+' 빼기">빼기</button></li>';
+      }else{
+        var dots=""; for(var i=0;i<3;i++)dots+='<i class="dot'+(i<c?" on":"")+'"></i>';
+        h+='<li><button class="person'+(c>=3?" full":"")+'" data-act="p-tap" data-id="'+esc(p.id)+'" aria-label="'+esc(p.name)+', 세 번 중 '+c+'번"><span class="name">'+esc(p.name)+'</span><span class="dots">'+dots+'</span></button></li>';
       }
-    </script>
-  </body>
+    });
+    h+='</ul>';
+    if(ed){
+      h+='<form class="add" data-form="add" data-b="'+b.id+'"><input type="text" id="add-'+b.id+'" maxlength="30" placeholder="이름 (예: 도반 한 분씩)" aria-label="추가할 사람 이름"><button class="btn" type="submit">추가</button></form>'+
+         '<div class="row"><button class="btn" data-act="b-edit" data-b="">고치기 마침</button></div>';
+    }else{
+      h+='<div class="row"><button class="btn" data-act="b-edit" data-b="'+b.id+'">사람 고치기</button></div>';
+    }
+    h+='</div>';
+  });
+  h+='</div>';
+  document.getElementById("praise").innerHTML=h;
+}
+function render(){renderTop();renderPre();renderIntent();renderDharani();renderMed();renderPraise();renderDay();}
+
+/* ---------- 누르기 ---------- */
+document.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]"); if(!el)return;
+  var act=el.getAttribute("data-act"), d=day(todayKey), id=el.getAttribute("data-id"), b=el.getAttribute("data-b");
+  if(act==="intent-add"){d.int=(d.int||0)+1;touchDay();renderIntent();renderTop();}
+  else if(act==="intent-undo"){d.int=Math.max(0,(d.int||0)-1);touchDay();renderIntent();renderTop();}
+  else if(act==="intent-edit"){editingIntent=true;renderIntent();var ta=document.getElementById("intent-text");if(ta)ta.focus();}
+  else if(act==="intent-cancel"){editingIntent=false;renderIntent();}
+  else if(act==="intent-save"){state.settings.intentText=document.getElementById("intent-text").value;editingIntent=false;touchSettings();renderIntent();}
+  else if(act==="dh-add"){if((d.dh||0)<21){d.dh=(d.dh||0)+1;touchDay();renderDharani();renderTop();}}
+  else if(act==="dh-undo"){d.dh=Math.max(0,Math.min(d.dh||0,21)-1);touchDay();renderDharani();renderTop();}
+  else if(act==="day-open"){viewDay=el.getAttribute("data-k");renderDay();}
+  else if(act==="day-close"){viewDay=null;renderDay();}
+  else if(act==="nth-edit"){editingNth=true;renderTop();var ni=document.getElementById("nth-input");if(ni){ni.focus();ni.select();}}
+  else if(act==="nth-cancel"){editingNth=false;renderTop();}
+  else if(act==="pre-done"){preOpen=false;if(!d.read){d.read=true;touchDay();}renderPre();document.getElementById("pre").scrollIntoView({block:"start"});}
+  else if(act==="pre-open"){preOpen=true;renderPre();}
+  else if(act==="med-add"){if((d.med||0)<3){d.med=(d.med||0)+1;touchDay();renderMed();renderTop();}}
+  else if(act==="med-undo"){d.med=Math.max(0,Math.min(d.med||0,3)-1);touchDay();renderMed();renderTop();}
+  else if(act==="p-tap"){var c=d.gg[id]||0;d.gg[id]=c>=3?0:c+1;touchDay();renderPraise();renderTop();}
+  else if(act==="b-edit"){editingBlock=b||null;renderPraise();}
+  else if(act==="p-del"){state.settings.people[b]=state.settings.people[b].filter(function(p){return p.id!==id;});touchSettings();renderPraise();renderTop();}
+});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&viewDay){viewDay=null;renderDay();}});
+document.addEventListener("input",function(e){
+  if(e.target.id!=="intent-note")return;
+  day(todayKey).note=e.target.value; touchDay();
+});
+document.addEventListener("submit",function(e){
+  var fn=e.target.closest("[data-form=nth]");
+  if(fn){
+    e.preventDefault();
+    var v=parseInt(document.getElementById("nth-input").value,10);
+    if(v>=1){var t=new Date();state.settings.start=dateKey(new Date(t.getFullYear(),t.getMonth(),t.getDate()-(v-1)));touchSettings();}
+    editingNth=false;renderTop();return;
+  }
+  var f=e.target.closest("[data-form=add]"); if(!f)return;
+  e.preventDefault();
+  var b=f.getAttribute("data-b"), inp=document.getElementById("add-"+b), name=inp.value.trim();
+  if(!name)return;
+  state.settings.people[b].push({id:"p"+Date.now().toString(36)+Math.floor(Math.random()*1000),name:name});
+  touchSettings();renderPraise();renderTop();
+  var again=document.getElementById("add-"+b); if(again)again.focus();
+});
+function checkDay(){
+  var k=dateKey(new Date());
+  if(k!==todayKey){todayKey=k;editingIntent=false;editingBlock=null;viewDay=null;render();}
+}
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")checkDay();});
+setInterval(checkDay,60000);
+
+render();
+
+/* 설치(홈 화면 추가)와 인터넷 없이 열기를 위한 서비스 워커 */
+if("serviceWorker" in navigator){
+  window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){});});
+}
+})();
+</script>
+</body>
 </html>

@@ -1,16 +1,7 @@
-# React + Vite
+# 오늘의 자각공부
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+신묘장구대다라니 21독, 명상파일 듣기, 공경찬탄, 의도 세우기를 날마다 체크하는 100일 자각공부 기록 사이트입니다.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- 핸드폰 크롬에서 열고 "앱 설치"(또는 "홈 화면에 추가")를 누르면 어플처럼 쓸 수 있습니다.
+- 기록은 각자 핸드폰(브라우저)에만 저장됩니다.
+- 화면은 `index.html` 한 파일에 들어 있고, 그림·아이콘·설치 파일은 `public/`에 있습니다.
