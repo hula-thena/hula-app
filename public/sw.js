@@ -2,7 +2,7 @@
    크롬에서 "앱 설치"가 뜨게 하고, 인터넷이 없어도 열리게 합니다.
    화면(페이지)은 인터넷이 되면 항상 최신으로 받아 오고, 안 되면 저장해 둔 것을 보여 줍니다. */
 
-const CACHE = "jagak-v1";
+const CACHE = "jagak-v2";
 const CORE = ["/", "/manifest.webmanifest", "/buddha3.webp", "/coin.webp", "/icon-192.png", "/icon-512.png", "/favicon.png"];
 
 self.addEventListener("install", (event) => {
