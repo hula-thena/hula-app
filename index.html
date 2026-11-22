@@ -118,6 +118,8 @@ textarea{min-height:120px;resize:vertical;line-height:1.7}
 .balls{display:grid;grid-template-columns:repeat(7,34px);gap:7px;justify-content:center}
 .ball{width:34px;height:34px}
 .ball.next{opacity:.75}
+.tc{display:flex;flex-direction:column;align-items:center;gap:3px}
+.tc small{font-size:12px;color:var(--muted);line-height:1.2}
 .center{display:flex;flex-direction:column;align-items:center;gap:4px}
 .count{font-family:var(--display);font-weight:700;font-size:46px;line-height:1;font-variant-numeric:tabular-nums}
 .count span{font-size:17px;color:var(--muted);font-weight:400}
@@ -534,7 +536,8 @@ function renderGoal(){
 }
 function renderThanks(){
   var d=day(todayKey), n=Math.min(d.th||0,10), done=n>=10, coins="", show=!done||thanksOpen;
-  for(var i=0;i<10;i++)coins+='<i class="ball'+(i<n?" on":(i===n?" next":""))+'"></i>';
+  var TL=["스승","도반","나"];
+  for(var i=0;i<10;i++)coins+='<span class="tc"><i class="ball'+(i<n?" on":(i===n?" next":""))+'"></i>'+(i<3?'<small>'+TL[i]+'</small>':'')+'</span>';
   var h='<div class="card'+(done?" done":"")+'"><div class="head"><h2>감사하기 10번</h2><span class="pill'+(done?" done":"")+'">'+(done?"마쳤습니다":n+" / 10")+'</span></div>';
   if(show)h+='<div class="pre"><p style="font-weight:700">"'+esc(THANKS_TITLE)+'"</p>'+THANKS.trim().split(/\n\s*\n/).map(function(s){return '<p>'+esc(s)+'</p>';}).join("")+'</div>';
   h+='<button class="ring" data-act="th-add" aria-label="감사 한 번 함. 지금 '+n+'번"'+(done?" disabled":"")+'><span class="balls" style="grid-template-columns:repeat(5,40px);gap:10px">'+coins.replace(/<i class="ball/g,'<i style="width:40px;height:40px" class="ball')+'</span><span class="hint">'+(done?"오늘 열 번 모두 감사했습니다":"잠시 떠올려 한 가지씩 감사할 때마다 금화를 누르세요")+'</span></button>';
