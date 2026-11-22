@@ -149,6 +149,7 @@ textarea{min-height:120px;resize:vertical;line-height:1.7}
   </header>
   <main style="display:flex;flex-direction:column;gap:20px">
     <section id="goal"></section>
+    <section id="topic"></section>
     <section id="pre"></section>
     <section id="intent"></section>
     <div class="hero" id="hero"></div>
@@ -422,7 +423,7 @@ function dayStat(k){
 function hasAny(x){
   if(!x)return false;
   var gg=x.gg||{};
-  return (x.int||0)>0||(x.dh||0)>0||(x.med||0)>0||(x.th||0)>0||!!x.read||!!(x.note||"").trim()||Object.keys(gg).some(function(q){return gg[q]>0;});
+  return (x.int||0)>0||(x.dh||0)>0||(x.med||0)>0||(x.th||0)>0||!!x.read||!!(x.note||"").trim()||!!(x.topic||"").trim()||Object.keys(gg).some(function(q){return gg[q]>0;});
 }
 function renderCal(){
   var s0=startDate(), h="", full=0;
@@ -441,6 +442,7 @@ function renderDay(){
   function row(label,val,ok){return '<div class="drow"><span>'+label+'</span><b'+(ok?' class="ok"':'')+'>'+val+'</b></div>';}
   if(!hasAny(x)){body='<p class="hint">이 날은 기록이 없습니다.</p>';}
   else{
+    if((x.topic||"").trim())body+='<h3>그날의 공부 주제</h3><p class="verse">'+esc(x.topic)+'</p>';
     if((x.note||"").trim())body+='<h3>그날의 의도</h3><p class="verse">'+esc(x.note)+'</p>';
     body+='<div>'+row("수행하기 전 마음가짐",x.read?"읽음":"안 읽음",!!x.read)+row("의도 세우기",(x.int||0)+"번",(x.int||0)>=1)+row("신묘장구대다라니",Math.min(x.dh||0,21)+" / 21독",(x.dh||0)>=21)+row("명상파일 듣기",Math.min(x.med||0,3)+" / 3번",(x.med||0)>=3)+row("감사하기",Math.min(x.th||0,10)+" / 10번",(x.th||0)>=10);
     BLOCKS.forEach(function(b){
@@ -514,6 +516,10 @@ function renderMed(){
     '<button class="ring" data-act="med-add" aria-label="명상파일 한 번 들음. 지금 '+n+'번"'+(done?" disabled":"")+'><span class="balls" style="grid-template-columns:repeat(3,44px);gap:14px">'+coins+'</span><span class="hint">'+(done?"오늘 세 번 모두 들었습니다":"한 번 들을 때마다 금화를 누르세요")+'</span></button>'+
     (n>0?'<div class="row" style="justify-content:center"><button class="btn" data-act="med-undo">하나 되돌리기</button></div>':'')+'</div>';
 }
+function renderTopic(){
+  var t=day(todayKey).topic||"";
+  document.getElementById("topic").innerHTML='<div class="card"><div class="head"><h2>오늘의 공부 주제</h2></div><textarea id="topic-text" style="min-height:72px" placeholder="오늘 공부할 주제를 적어 보세요" aria-label="오늘의 공부 주제">'+esc(t)+'</textarea><p class="hint">적는 대로 저장되고, 날짜를 누르면 지난 주제도 볼 수 있습니다.</p></div>';
+}
 function renderGoal(){
   var g=(state.settings.goal||"").trim(), h='<div class="card"><div class="head"><h2>100일 동안 이룰 것</h2></div>';
   if(editingGoal||!g){
@@ -565,7 +571,7 @@ function renderPraise(){
   h+='</div>';
   document.getElementById("praise").innerHTML=h;
 }
-function render(){renderTop();renderGoal();renderPre();renderIntent();renderDharani();renderMed();renderThanks();renderPraise();renderDay();}
+function render(){renderTop();renderGoal();renderTopic();renderPre();renderIntent();renderDharani();renderMed();renderThanks();renderPraise();renderDay();}
 
 /* ---------- 누르기 ---------- */
 document.addEventListener("click",function(e){
@@ -598,8 +604,8 @@ document.addEventListener("click",function(e){
 });
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&viewDay){viewDay=null;renderDay();}});
 document.addEventListener("input",function(e){
-  if(e.target.id!=="intent-note")return;
-  day(todayKey).note=e.target.value; touchDay();
+  if(e.target.id==="intent-note"){day(todayKey).note=e.target.value;touchDay();}
+  else if(e.target.id==="topic-text"){day(todayKey).topic=e.target.value;touchDay();}
 });
 document.addEventListener("submit",function(e){
   var fn=e.target.closest("[data-form=nth]");
