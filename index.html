@@ -50,16 +50,16 @@ button{touch-action:manipulation;cursor:pointer}
 
 .top{display:flex;flex-direction:column;gap:14px}
 .date{color:var(--muted);font-size:14px}
-.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
 .wd{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 0 9px;display:flex;flex-direction:column;align-items:center;gap:5px;font-variant-numeric:tabular-nums;cursor:pointer}
 .wd.today{border-color:var(--accent);border-width:2px;padding:7px 0 8px}
 .wd small{font-size:11px;color:var(--muted);line-height:1}
 .wd b{font-size:15px;font-weight:600;line-height:1}
-.marks{display:grid;grid-template-columns:repeat(3,11px);gap:2px;justify-content:center}
+.marks{display:grid;grid-template-columns:repeat(3,10px);gap:1px;justify-content:center}
 /* 체크 표시는 모두 연꽃 금화 그림: 처음에는 색 없이 흐리고, 채우면 금빛으로 빛난다. */
 .mark,.dot,.ball{background:url(/coin.webp) center/contain no-repeat;filter:grayscale(1) brightness(1.15);opacity:.4;flex:none}
 .mark.on,.dot.on,.ball.on{filter:drop-shadow(0 0 3px rgba(240,190,60,.9));opacity:1}
-.mark{width:11px;height:11px}
+.mark{width:10px;height:10px}
 .mark.on{filter:none}
 .legend{font-size:12px;color:var(--muted)}
 
@@ -74,6 +74,8 @@ button{touch-action:manipulation;cursor:pointer}
 .pre{display:flex;flex-direction:column;gap:20px;padding:4px 0}
 .pre p{font-family:var(--display);font-size:clamp(15px,4.4vw,17px);line-height:1.95;text-align:center;white-space:pre-line;word-break:keep-all}
 .motto{margin:0;padding:16px 12px;border-radius:14px;background:var(--soft);display:flex;flex-direction:column;gap:16px;font-family:var(--display);font-size:clamp(15px,4.2vw,17px);line-height:1.8;text-align:center;word-break:keep-all}
+.motto .hint{font-family:var(--body);font-size:13px}
+.mb{width:100%;height:auto;aspect-ratio:1;max-width:26px}
 .hundred{display:flex;flex-direction:column;gap:8px}
 .hrow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .nth{font-family:var(--display);font-weight:700;font-size:24px;color:var(--accent);font-variant-numeric:tabular-nums}
@@ -146,7 +148,7 @@ textarea{min-height:120px;resize:vertical;line-height:1.7}
   <header class="top">
     <p class="date" id="date"></p>
     <h1>오늘의 자각공부</h1>
-    <blockquote class="motto"><p>생각의 내용물이 중요한 게 아니라<br>그것을 누가 만든지 '아는 것'이 중요하다</p><p>어리석은 자는 생각의 내용을 보고<br>지혜로운 자는 생각을 일으킨 나를 본다.</p></blockquote>
+    <blockquote class="motto"><p>생각의 내용물이 중요한 게 아니라<br>그것을 누가 만든지 '아는 것'이 중요하다</p><p>어리석은 자는 생각의 내용을 보고<br>지혜로운 자는 생각을 일으킨 나를 본다.</p><div id="motto"></div></blockquote>
     <div class="hundred" id="hundred"></div>
     <div class="week" id="week" aria-label="지난 7일 기록"></div>
     <p class="legend">금화 다섯 닢은 차례로 의도 · 다라니 21독 · 명상 · 감사 · 공경찬탄입니다. 마친 것은 금빛으로 채워집니다. 날짜를 누르면 그날 기록이 보입니다.</p>
@@ -427,7 +429,7 @@ function dayStat(k){
 function hasAny(x){
   if(!x)return false;
   var gg=x.gg||{};
-  return (x.int||0)>0||(x.dh||0)>0||(x.med||0)>0||(x.th||0)>0||!!x.read||!!(x.note||"").trim()||!!(x.topic||"").trim()||Object.keys(gg).some(function(q){return gg[q]>0;});
+  return (x.int||0)>0||(x.dh||0)>0||(x.med||0)>0||(x.th||0)>0||(x.mo||0)>0||!!x.read||!!(x.note||"").trim()||!!(x.topic||"").trim()||Object.keys(gg).some(function(q){return gg[q]>0;});
 }
 function renderCal(){
   var s0=startDate(), h="", full=0;
@@ -448,7 +450,7 @@ function renderDay(){
   else{
     if((x.topic||"").trim())body+='<h3>그날의 공부 주제</h3><p class="verse">'+esc(x.topic)+'</p>';
     if((x.note||"").trim())body+='<h3>그날의 의도</h3><p class="verse">'+esc(x.note)+'</p>';
-    body+='<div>'+row("수행하기 전 마음가짐",x.read?"읽음":"안 읽음",!!x.read)+row("의도 세우기",(x.int||0)+"번",(x.int||0)>=1)+row("신묘장구대다라니",Math.min(x.dh||0,21)+" / 21독",(x.dh||0)>=21)+row("명상파일 듣기",Math.min(x.med||0,3)+" / 3번",(x.med||0)>=3)+row("감사하기",Math.min(x.th||0,10)+" / 10번",(x.th||0)>=10);
+    body+='<div>'+row("자각 문구 읽기",Math.min(x.mo||0,20)+" / 20번",(x.mo||0)>=20)+row("수행하기 전 마음가짐",x.read?"읽음":"안 읽음",!!x.read)+row("의도 세우기",(x.int||0)+"번",(x.int||0)>=1)+row("신묘장구대다라니",Math.min(x.dh||0,21)+" / 21독",(x.dh||0)>=21)+row("명상파일 듣기",Math.min(x.med||0,3)+" / 3번",(x.med||0)>=3)+row("감사하기",Math.min(x.th||0,10)+" / 10번",(x.th||0)>=10);
     BLOCKS.forEach(function(b){
       var ppl=state.settings.people[b.id], done=ppl.filter(function(q){return (gg[q.id]||0)>=3;}).length;
       body+=row("공경찬탄 · "+b.title,done+" / "+ppl.length+"명",ppl.length>0&&done===ppl.length);
@@ -520,6 +522,12 @@ function renderMed(){
     '<button class="ring" data-act="med-add" aria-label="명상파일 한 번 들음. 지금 '+n+'번"'+(done?" disabled":"")+'><span class="balls" style="grid-template-columns:repeat(3,44px);gap:14px">'+coins+'</span><span class="hint">'+(done?"오늘 세 번 모두 들었습니다":"한 번 들을 때마다 금화를 누르세요")+'</span></button>'+
     (n>0?'<div class="row" style="justify-content:center"><button class="btn" data-act="med-undo">하나 되돌리기</button></div>':'')+'</div>';
 }
+function renderMotto(){
+  var d=day(todayKey), n=Math.min(d.mo||0,20), done=n>=20, c="";
+  for(var i=0;i<20;i++)c+='<i class="ball mb'+(i<n?" on":(i===n?" next":""))+'"></i>';
+  document.getElementById("motto").innerHTML='<button class="ring" data-act="mo-add" aria-label="자각 문구 한 번 읽음. 지금 '+n+'번"'+(done?" disabled":"")+' style="gap:8px;padding:0"><span class="balls" style="grid-template-columns:repeat(10,minmax(0,26px));gap:5px;width:100%">'+c+'</span><span class="hint">'+(done?"오늘 스무 번 모두 읽었습니다":"한 번 읽을 때마다 금화를 누르세요 · "+n+" / 20")+'</span></button>'+
+    (n>0?'<div class="row" style="justify-content:center;margin-top:6px"><button class="btn" data-act="mo-undo" style="padding:4px 10px;font-size:13px">하나 되돌리기</button></div>':'');
+}
 function renderTopic(){
   var t=day(todayKey).topic||"";
   document.getElementById("topic").innerHTML='<div class="card"><div class="head"><h2>오늘의 공부 주제</h2></div><textarea id="topic-text" style="min-height:72px" placeholder="오늘 공부할 주제를 적어 보세요" aria-label="오늘의 공부 주제">'+esc(t)+'</textarea><p class="hint">적는 대로 저장되고, 날짜를 누르면 지난 주제도 볼 수 있습니다.</p></div>';
@@ -576,7 +584,7 @@ function renderPraise(){
   h+='</div>';
   document.getElementById("praise").innerHTML=h;
 }
-function render(){renderTop();renderGoal();renderTopic();renderPre();renderIntent();renderDharani();renderMed();renderThanks();renderPraise();renderDay();}
+function render(){renderTop();renderMotto();renderGoal();renderTopic();renderPre();renderIntent();renderDharani();renderMed();renderThanks();renderPraise();renderDay();}
 
 /* ---------- 누르기 ---------- */
 document.addEventListener("click",function(e){
@@ -600,6 +608,8 @@ document.addEventListener("click",function(e){
   else if(act==="goal-save"){state.settings.goal=document.getElementById("goal-text").value.trim();editingGoal=false;touchSettings();renderGoal();}
   else if(act==="goal-edit"){editingGoal=true;renderGoal();var gt=document.getElementById("goal-text");if(gt)gt.focus();}
   else if(act==="goal-cancel"){editingGoal=false;renderGoal();}
+  else if(act==="mo-add"){if((d.mo||0)<20){d.mo=(d.mo||0)+1;touchDay();renderMotto();renderCal();}}
+  else if(act==="mo-undo"){d.mo=Math.max(0,Math.min(d.mo||0,20)-1);touchDay();renderMotto();renderCal();}
   else if(act==="th-add"){if((d.th||0)<10){d.th=(d.th||0)+1;if(d.th>=10)thanksOpen=false;touchDay();renderThanks();renderTop();}}
   else if(act==="th-undo"){d.th=Math.max(0,Math.min(d.th||0,10)-1);touchDay();renderThanks();renderTop();}
   else if(act==="th-open"){thanksOpen=!thanksOpen;renderThanks();}
