@@ -492,7 +492,7 @@ function renderHero(){
   var d=day(todayKey), tot=0, got=0;
   BLOCKS.forEach(function(b){state.settings.people[b.id].forEach(function(q){tot+=3;got+=Math.min(d.gg[q.id]||0,3);});});
   var dh=Math.min(d.dh||0,21)/21, pr=tot?got/tot:0, all=dh>=1&&blocksDone(d)>=3;
-  document.getElementById("hero").innerHTML=heroHtml((dh+pr)/2,all)+'<p class="hint" style="text-align:center">'+(all?"오늘 다라니 21독과 공경찬탄을 모두 채웠습니다.":"다라니와 공경찬탄을 채울수록 연꽃 아래에서부터 빛이 차오릅니다.")+'</p>';
+  document.getElementById("hero").innerHTML=heroHtml((dh+pr)/2,all);
 }
 function renderDharani(){
   var d=day(todayKey), n=Math.min(d.dh||0,21), done=n>=21, beads="";
