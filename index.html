@@ -150,7 +150,7 @@ textarea{min-height:120px;resize:vertical;line-height:1.7}
     <h1>오늘의 자각공부</h1>
     <div class="dayinfo"><p class="date" id="date"></p><div class="hundred" id="hundred"></div></div>
     <div class="week" id="week" aria-label="지난 7일 기록"></div>
-    <p class="legend">금화 다섯 닢은 차례로 의도 · 다라니 21독 · 명상 · 감사 · 공경찬탄입니다. 마친 것은 금빛으로 채워집니다. 날짜를 누르면 그날 기록이 보입니다.</p>
+    <p class="legend">금화 여섯 닢은 차례로 의도 · 자각문구 · 명상 · 다라니 21독 · 공경찬탄 · 감사입니다. 마친 것은 금빛으로 채워집니다. 날짜를 누르면 그날 기록이 보입니다.</p>
     <div class="hero" id="hero"></div>
   </header>
   <main style="display:flex;flex-direction:column;gap:20px">
@@ -408,23 +408,23 @@ function renderTop(){
   var ST=state.settings.start||START, s0=startDate(), t0=new Date(now.getFullYear(),now.getMonth(),now.getDate()), nth=Math.round((t0-s0)/864e5)+1, full=0;
   Object.keys(state.days).forEach(function(k){
     if(k<ST)return; var x=state.days[k], bl=k===todayKey?blocksDone(day(k)):(x.blocks||0);
-    if((x.int||0)>=1&&(x.dh||0)>=21&&(x.med||0)>=3&&(x.th||0)>=10&&bl>=3)full++;
+    if((x.int||0)>=1&&(x.dh||0)>=21&&(x.med||0)>=3&&(x.th||0)>=10&&(x.mo||0)>=20&&bl>=3)full++;
   });
   document.getElementById("hundred").innerHTML=editingNth?'<form class="add" data-form="nth"><input type="number" inputmode="numeric" id="nth-input" min="1" max="999" value="'+Math.max(1,nth)+'" aria-label="오늘이 몇 일차인지"><button class="btn" type="submit">저장</button><button class="btn" type="button" data-act="nth-cancel">취소</button></form><p class="hint">오늘이 몇 일차인지 숫자로 적어 주세요.</p>':nth<1?'<div class="hrow"><span class="hint">아직 시작 전입니다</span><button class="btn" data-act="nth-edit" style="padding:4px 10px;font-size:13px">차수 바꾸기</button></div>':'<div class="hrow"><span class="nth">'+nth+'일차</span><button class="btn" data-act="nth-edit" style="padding:4px 10px;font-size:13px">차수 바꾸기</button><span class="hint">'+(nth<100?'100일까지 '+(100-nth)+'일 남았습니다':(nth===100?'오늘이 100일째입니다':'100일을 채웠습니다'))+' · 모두 마친 날 '+full+'일</span></div><div class="bar" role="img" aria-label="100일 중 '+Math.min(100,nth)+'일째"><i style="width:'+Math.min(100,nth)+'%"></i></div>';
   for(var i=6;i>=0;i--){
     var dt=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i), k=dateKey(dt), d=state.days[k]||{};
-    var a=(d.int||0)>=1, b=(d.dh||0)>=21, m=(d.med||0)>=3, g=(d.th||0)>=10, c=(k===todayKey?blocksDone(day(k)):(d.blocks||0))>=3;
-    var lab=(dt.getMonth()+1)+"월 "+dt.getDate()+"일: 의도 "+(a?"함":"안 함")+", 다라니 "+(b?"마침":"못 마침")+", 명상 "+(m?"마침":"못 마침")+", 감사 "+(g?"마침":"못 마침")+", 공경찬탄 "+(c?"마침":"못 마침");
+    var a=(d.int||0)>=1, b=(d.dh||0)>=21, m=(d.med||0)>=3, g=(d.th||0)>=10, z=(d.mo||0)>=20, c=(k===todayKey?blocksDone(day(k)):(d.blocks||0))>=3;
+    var lab=(dt.getMonth()+1)+"월 "+dt.getDate()+"일: 의도 "+(a?"함":"안 함")+", 자각문구 "+(z?"마침":"못 마침")+", 명상 "+(m?"마침":"못 마침")+", 다라니 "+(b?"마침":"못 마침")+", 공경찬탄 "+(c?"마침":"못 마침")+", 감사 "+(g?"마침":"못 마침");
     h+='<button type="button" class="wd'+(i===0?" today":"")+'" data-act="day-open" data-k="'+k+'" title="'+lab+'" aria-label="'+lab+'"><small>'+WD[dt.getDay()]+'</small><b>'+dt.getDate()+'</b>'+
-       '<span class="marks"><i class="mark'+(a?" on":"")+'"></i><i class="mark'+(b?" on":"")+'"></i><i class="mark'+(m?" on":"")+'"></i><i class="mark'+(g?" on":"")+'"></i><i class="mark'+(c?" on":"")+'"></i></span></button>';
+       '<span class="marks"><i class="mark'+(a?" on":"")+'"></i><i class="mark'+(z?" on":"")+'"></i><i class="mark'+(m?" on":"")+'"></i><i class="mark'+(b?" on":"")+'"></i><i class="mark'+(c?" on":"")+'"></i><i class="mark'+(g?" on":"")+'"></i></span></button>';
   }
   document.getElementById("week").innerHTML=h;
   renderCal();
 }
 function dayStat(k){
   var x=state.days[k]; if(!x)return 0;
-  var a=(x.int||0)>=1,b=(x.dh||0)>=21,m=(x.med||0)>=3,g=(x.th||0)>=10,c=(k===todayKey?blocksDone(day(k)):(x.blocks||0))>=3;
-  return (a?1:0)+(b?1:0)+(m?1:0)+(g?1:0)+(c?1:0);
+  var a=(x.int||0)>=1,b=(x.dh||0)>=21,m=(x.med||0)>=3,g=(x.th||0)>=10,z=(x.mo||0)>=20,c=(k===todayKey?blocksDone(day(k)):(x.blocks||0))>=3;
+  return (a?1:0)+(b?1:0)+(m?1:0)+(g?1:0)+(z?1:0)+(c?1:0);
 }
 function hasAny(x){
   if(!x)return false;
@@ -435,11 +435,11 @@ function renderCal(){
   var s0=startDate(), h="", full=0;
   for(var i=0;i<100;i++){
     var dt=new Date(s0.getFullYear(),s0.getMonth(),s0.getDate()+i), k=dateKey(dt), fut=k>todayKey;
-    var s=fut?0:dayStat(k), cls="cell"+(fut?" fut":"")+(k===todayKey?" now":"")+(s===5?" full":(!fut&&hasAny(state.days[k])?" part":""));
-    if(s===5)full++;
-    h+=fut?'<span class="'+cls+'" aria-hidden="true">'+(i+1)+'</span>':'<button type="button" class="'+cls+'" data-act="day-open" data-k="'+k+'" aria-label="'+(i+1)+'일차, '+(dt.getMonth()+1)+'월 '+dt.getDate()+'일, 다섯 가지 중 '+s+'가지 마침">'+(i+1)+'</button>';
+    var s=fut?0:dayStat(k), cls="cell"+(fut?" fut":"")+(k===todayKey?" now":"")+(s===6?" full":(!fut&&hasAny(state.days[k])?" part":""));
+    if(s===6)full++;
+    h+=fut?'<span class="'+cls+'" aria-hidden="true">'+(i+1)+'</span>':'<button type="button" class="'+cls+'" data-act="day-open" data-k="'+k+'" aria-label="'+(i+1)+'일차, '+(dt.getMonth()+1)+'월 '+dt.getDate()+'일, 여섯 가지 중 '+s+'가지 마침">'+(i+1)+'</button>';
   }
-  document.getElementById("cal").innerHTML='<div class="card"><div class="head"><h2>100일 기록</h2><span class="pill'+(full>0?" done":"")+'">모두 마친 날 '+full+'일</span></div><div class="cal">'+h+'</div><p class="hint">금빛은 의도 · 다라니 · 명상 · 감사 · 공경찬탄을 모두 마친 날, 연분홍은 일부만 한 날입니다. 지난 날을 누르면 그날 기록이 보입니다.</p></div>';
+  document.getElementById("cal").innerHTML='<div class="card"><div class="head"><h2>100일 기록</h2><span class="pill'+(full>0?" done":"")+'">모두 마친 날 '+full+'일</span></div><div class="cal">'+h+'</div><p class="hint">금빛은 여섯 가지(의도 · 자각문구 · 명상 · 다라니 · 공경찬탄 · 감사)를 모두 마친 날, 연분홍은 일부만 한 날입니다. 지난 날을 누르면 그날 기록이 보입니다.</p></div>';
 }
 function renderDay(){
   var el=document.getElementById("dayview");
@@ -608,8 +608,8 @@ document.addEventListener("click",function(e){
   else if(act==="goal-save"){state.settings.goal=document.getElementById("goal-text").value.trim();editingGoal=false;touchSettings();renderGoal();}
   else if(act==="goal-edit"){editingGoal=true;renderGoal();var gt=document.getElementById("goal-text");if(gt)gt.focus();}
   else if(act==="goal-cancel"){editingGoal=false;renderGoal();}
-  else if(act==="mo-add"){if((d.mo||0)<20){d.mo=(d.mo||0)+1;touchDay();renderMotto();renderCal();}}
-  else if(act==="mo-undo"){d.mo=Math.max(0,Math.min(d.mo||0,20)-1);touchDay();renderMotto();renderCal();}
+  else if(act==="mo-add"){if((d.mo||0)<20){d.mo=(d.mo||0)+1;touchDay();renderMotto();renderTop();}}
+  else if(act==="mo-undo"){d.mo=Math.max(0,Math.min(d.mo||0,20)-1);touchDay();renderMotto();renderTop();}
   else if(act==="th-add"){if((d.th||0)<10){d.th=(d.th||0)+1;if(d.th>=10)thanksOpen=false;touchDay();renderThanks();renderTop();}}
   else if(act==="th-undo"){d.th=Math.max(0,Math.min(d.th||0,10)-1);touchDay();renderThanks();renderTop();}
   else if(act==="th-open"){thanksOpen=!thanksOpen;renderThanks();}
